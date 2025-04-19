@@ -1,7 +1,7 @@
 from graphics import Line, Point
 
 class Cell:
-    def __init__(self, window):
+    def __init__(self, window = None):
         self._win = window
         self._x1 = None
         self._y1 = None
@@ -19,14 +19,14 @@ class Cell:
         self._y1 = y1
         self._x2 = x2
         self._y2 = y2
-        if self.has_left_wall:
-            self._win.draw_line(Line(Point(x1, y1), Point(x1, y2)))
-        if self.has_top_wall:
-            self._win.draw_line(Line(Point(x1, y1), Point(x2, y1)))
-        if self.has_right_wall:
-            self._win.draw_line(Line(Point(x2, y1), Point(x2, y2)))
-        if self.has_bottom_wall:
-            self._win.draw_line(Line(Point(x1, y2), Point(x2, y2)))
+        left_color = "black" if self.has_left_wall else "white"
+        self._win.draw_line(Line(Point(x1, y1), Point(x1, y2)), left_color)
+        top_color = "black" if self.has_top_wall else "white"
+        self._win.draw_line(Line(Point(x1, y1), Point(x2, y1)), top_color)
+        right_color = "black" if self.has_right_wall else "white"
+        self._win.draw_line(Line(Point(x2, y1), Point(x2, y2)), right_color)
+        bottom_color = "black" if self.has_bottom_wall else "white"
+        self._win.draw_line(Line(Point(x1, y2), Point(x2, y2)), bottom_color)
 
     def get_center(self):
         half_length = abs(self._x2 - self._x1) // 2
