@@ -25,25 +25,33 @@ class Cell:
         self.has_right_wall = True
         self.has_bottom_wall = True
 
-    def draw(self):
+    def draw(self, x1, y1, x2, y2):
+        self._x1 = x1
+        self._y1 = y1
+        self._x2 = x2
+        self._y2 = y2
         if self.has_left_wall:
-            self._win.draw_line(Line(Point(self._x1, self._y1), Point(self._x1, self._y2)))
+            self._win.draw_line(Line(Point(x1, y1), Point(x1, y2)))
         if self.has_top_wall:
-            self._win.draw_line(Line(Point(self._x1, self._y1), Point(self._x2, self._y1)))
+            self._win.draw_line(Line(Point(x1, y1), Point(x2, y1)))
         if self.has_right_wall:
-            self._win.draw_line(Line(Point(self._x2, self._y1), Point(self._x2, self._y2)))
+            self._win.draw_line(Line(Point(x2, y1), Point(x2, y2)))
         if self.has_bottom_wall:
-            self._win.draw_line(Line(Point(self._x1, self._y2), Point(self._x2, self._y2)))
+            self._win.draw_line(Line(Point(x1, y2), Point(x2, y2)))
+
+    def get_center(self):
+        half_length = abs(self._x2 - self._x1) // 2
+        x_center = half_length + self._x1
+        y_center = half_length + self._y1
+        return Point(x_center, y_center)
 
     def draw_move(self, to_cell, undo=False):
-        mid_x = (self._x1 + self._x2) / 2
-        mid_y = (self._y1 + self._y2) / 2
-        to_mid_x = (to_cell._x1 + to_cell._x2) / 2
-        to_mid_y = (to_cell._y1 + to_cell._y2) / 2
-        if undo:
-            self._win.draw_line(Line(Point(mid_x, mid_y), Point(to_mid_x, to_mid_y)), "red")
-        else:
-            self._win.draw_line(Line(Point(mid_x, mid_y), Point(to_mid_x, to_mid_y)))
+        center_1 = self.get_center()
+        center_2 = to_cell.get_center()
+
+        color = "red" if undo else "black"
+
+        self._win.draw_line(Line(center_1, center_2), color)
 
 
 class Window():
