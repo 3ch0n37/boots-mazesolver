@@ -29,5 +29,26 @@ class Test(unittest.TestCase):
             False,
         )
 
+    def test_maze_generation(self):
+        num_cols = 8
+        num_rows = 6
+        maze = Maze(0, 0, num_rows, num_cols, 10, 10)
+        visited_cells = sum(
+            cell.visited for col in maze._cells for cell in col
+        )
+        self.assertEqual(visited_cells, 0)
+
+    def test_reset_visited_cells(self):
+        num_cols = 10
+        num_rows = 10
+        maze = Maze(0, 0, num_rows, num_cols, 10, 10)
+        for col in maze._cells:
+            for cell in col:
+                cell.visited = True
+        maze._reset_cell_visited()
+        for col in maze._cells:
+            for cell in col:
+                self.assertFalse(cell.visited)
+
 if __name__ == "__main__":
     unittest.main()
